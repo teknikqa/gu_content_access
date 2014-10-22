@@ -1,0 +1,7 @@
+name = GU Content Access
+description = Customizations to content access.
+package = GU
+core = 7.x
+
+dependencies[] = menu
+dependencies[] = content_access
