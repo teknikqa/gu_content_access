@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * Update old menu links under employees .
+ */
+function gu_content_access_update_7001(&$sandbox) {
+  foreach (menu_tree_all_data('menu-audience-menu') as $key => $link ) {
+    if($key == '49952 Employees 1161') {
+      $links = array();
+      gu_content_access_flaten_menu_tree($link['below'], $links);
+      foreach ($links as $item) {
+        gu_content_access_menu_link_set_access($item);
+      }
+    }
+  }
+}
+
+function gu_content_access_flaten_menu_tree($tree, &$links) {
+  foreach ($tree as $branch) {
+    $links[] = $branch['link'];
+    if (!empty($branch['below'])) {
+      gu_content_access_flaten_menu_tree($branch['below'], $links);
+    }
+  }
+}
