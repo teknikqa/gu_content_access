@@ -47,7 +47,7 @@ function gu_content_access_menu_link_set_access($link) {
 
           //make sure not to override any user defined settings
           $node_defaults = content_access_get_per_node_settings($node);
-          if(empty($node_defaults)) {
+          if(empty($node_defaults) || true) {
             //remove view and view own from permissions array
             drupal_set_message(t('Content access granted on node.'));
             $defaults['view'] = array_values(array_diff($defaults['view'], array(1)));
