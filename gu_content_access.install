@@ -23,10 +23,3 @@ function gu_content_access_flaten_menu_tree($tree, &$links) {
     }
   }
 }
-
-/**
- * Update old menu links under employees again.
- */
-function gu_content_access_update_7002(&$sandbox) {
-  gu_content_access_update_7001(&$sandbox);
-}
