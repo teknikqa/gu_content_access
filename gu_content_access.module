@@ -13,6 +13,21 @@ function gu_content_access_menu_link_insert($link) {
 function gu_content_access_menu_link_update($link) {
   gu_content_access_menu_link_set_access($link);
 }
+
+/**
+ * Implements hook_node_insert().
+ */
+function gu_content_access_node_insert($node) {
+  gu_content_access_node_set_access($node);
+}
+
+/**
+ * Implements hook_menu_link_update().
+ */
+function gu_content_access_node_update($node) {
+  gu_content_access_node_set_access($node);
+}
+
 /**
  * Helper finction to check if link is under eployees and set the needed permissions
  * @param unknown_type $link
@@ -58,5 +73,37 @@ function gu_content_access_menu_link_set_access($link) {
         }
       }
     }
+  }
+}
+
+function gu_content_access_node_set_access($node) {
+  
+  // Only for events.
+  if($node->type == "event") {
+
+    $defaults = array();
+    //get the current permissions on the node
+    foreach (_content_access_get_operations() as $op => $label) {
+      $defaults[$op] = content_access_per_node_setting($op, $node);
+    }
+    // Check for intermal events.
+    if($node->field_event_type['und'][0]['value'] == 1) {
+      $defaults['view'] = array_values(array_diff($defaults['view'], array(1)));
+      $defaults['view_own'] = array_values(array_diff($defaults['view_own'], array(1)));
+      drupal_set_message(t('Only employess can view this event'));
+    }
+    else {
+      if(!in_array($defaults['view'],1)) {
+        $defaults['view'][] = 1;
+      }
+      if(!in_array($defaults['view_own'],1)) {
+        $defaults['view_own'][] = 1;
+      }
+      drupal_set_message(t('Any one can view this event'));
+    }
+
+    // Save and rebuilt permssions.
+    content_access_save_per_node_settings($node, $defaults);
+    node_access_acquire_grants($node);
   }
 }
