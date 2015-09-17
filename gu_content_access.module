@@ -107,3 +107,60 @@ function gu_content_access_node_set_access($node) {
     node_access_acquire_grants($node);
   }
 }
+
+
+
+/**
+ * Implements hook_block_info().
+ */
+function gu_content_access_block_info() {
+  $blocks['employee_search']['info'] = t('GUQ Employees search form');
+  // Not worth caching.
+  $blocks['employee_search']['cache'] = DRUPAL_NO_CACHE;
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function gu_content_access_block_view($delta = '') {
+  switch ($delta) {
+    case 'employee_search':
+    $block['content'] = drupal_get_form('employee_search_block_form');
+    return $block;
+  }
+}
+
+/**
+ * Implemenatation of hook_form
+ */
+function employee_search_block_form($form, &$form_state, $form_id) {
+  $form['search'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Search'),
+    '#title_display' => 'invisible',
+    '#size' => 15,
+    '#default_value' => '',
+    '#attributes' => array('title' => t('Enter the terms you wish to search for.')),
+  );
+  $form['actions'] = array('#type' => 'actions');
+  $form['actions']['submit'] = array('#type' => 'submit', '#value' => t('Search'));
+  $form['#submit'][] = 'employee_search_block_form_submit';
+
+  return $form;
+}
+
+/**
+ * Process a block search form submission.
+ */
+function employee_search_block_form_submit($form, &$form_state) {
+  if (isset($_GET['destination'])) {
+    unset($_GET['destination']);
+  }
+
+  if ($form_state['values']['search'] == '') {
+    form_set_error('keys', t('Please enter some keywords.'));
+  }
+  $form_state['redirect'] = 'employees/search/' . trim($form_state['values']['search']);
+
+}
