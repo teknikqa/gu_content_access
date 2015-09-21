@@ -134,7 +134,7 @@ function gu_content_access_block_view($delta = '') {
 /**
  * Implemenatation of hook_form
  */
-function employee_search_block_form($form, &$form_state, $form_id) {
+function employee_search_block_form($form, &$form_state) {
   $form['search'] = array(
     '#type' => 'textfield',
     '#title' => t('Search'),
