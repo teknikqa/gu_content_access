@@ -77,7 +77,7 @@ function gu_content_access_menu_link_set_access($link) {
 }
 
 function gu_content_access_node_set_access($node) {
-  
+
   // Only for events.
   if($node->type == "event") {
 
@@ -141,7 +141,10 @@ function employee_search_block_form($form, &$form_state) {
     '#title_display' => 'invisible',
     '#size' => 15,
     '#default_value' => '',
-    '#attributes' => array('title' => t('Enter the terms you wish to search for.')),
+    '#attributes' => array(
+      'title' => t('Enter the terms you wish to search for.'),
+      'placeholder' => t('Search Employees Website'),
+    ),
   );
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['submit'] = array('#type' => 'submit', '#value' => t('Search'));
