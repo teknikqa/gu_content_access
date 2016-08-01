@@ -93,10 +93,10 @@ function gu_content_access_node_set_access($node) {
       drupal_set_message(t('Only employess can view this event'));
     }
     else {
-      if(!in_array($defaults['view'],1)) {
+      if(!in_array($defaults['view'], array(1))) {
         $defaults['view'][] = 1;
       }
-      if(!in_array($defaults['view_own'],1)) {
+      if(!in_array($defaults['view_own'], array(1))) {
         $defaults['view_own'][] = 1;
       }
       drupal_set_message(t('Any one can view this event'));
