@@ -1,6 +1,6 @@
 name = GU Content Access
 description = Customizations to content access.
-package = GU
+package = GUQatar
 core = 7.x
 
 dependencies[] = menu
